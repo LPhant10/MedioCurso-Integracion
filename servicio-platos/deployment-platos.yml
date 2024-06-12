@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicio-platos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicio-platos
+  template:
+    metadata:
+      labels:
+        app: servicio-platos
+    spec:
+      containers:
+        - name: servicio-platos
+          image: "975050047110.dkr.ecr.us-east-2.amazonaws.com/comedor-i:servicio-platos-api"
+          ports:
+            - containerPort: 3001
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicio-platos
+spec:
+  type: LoadBalancer
+  selector:
+    app: servicio-platos
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001
